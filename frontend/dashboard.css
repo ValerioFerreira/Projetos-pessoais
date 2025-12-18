@@ -5,6 +5,10 @@ body {
   background-color: #ffffff;
   margin: 16px;
   color: #1f2933;
+
+  /* IMPORTANTE PARA MOBILE */
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 h1 {
@@ -16,23 +20,25 @@ h1 {
 /* ===== Container ===== */
 
 .table-container {
-  display: inline-block;
+  display: block;              /* inline-block causa problemas no mobile */
   max-width: 100%;
   max-height: 70vh;
-  overflow: auto;
+  overflow-x: auto;            /* scroll horizontal */
+  overflow-y: auto;
   border: 1px solid #d0d5da;
   border-radius: 6px;
-  position: relative;   /* 👈 cria contexto correto */
+  position: relative;
+  background-color: #ffffff;
 }
-
 
 /* ===== Tabela ===== */
 
 table.dashboard {
   border-collapse: separate;
   border-spacing: 0;
-  width: auto;          /* largura automática */
-  table-layout: auto;   /* baseado no maior conteúdo */
+  width: max-content;          /* essencial para scroll horizontal */
+  min-width: 100%;
+  table-layout: auto;
 }
 
 /* ===== Células ===== */
@@ -43,7 +49,7 @@ table.dashboard td {
   border-bottom: 1px solid #e1e4e8;
   padding: 10px 14px;
   text-align: center;
-  font-size: 16px;
+  font-size: 15px;
   white-space: nowrap;
 }
 
@@ -85,6 +91,7 @@ td.unit {
   position: sticky;
   left: 0;
   z-index: 2;
+  background-color: #fafbfc;
 }
 
 th.sticky-col.sticky-header {
@@ -94,13 +101,13 @@ th.sticky-col.sticky-header {
 /* ===== Estados Operacionais ===== */
 
 td.available {
-  background-color: #2f7d4a; /* verde escuro */
+  background-color: #2f7d4a;
   color: #ffffff;
   font-weight: 600;
 }
 
 td.restricted {
-  background-color: #9e3b32; /* vermelho escuro */
+  background-color: #9e3b32;
   color: #ffffff;
   font-weight: 600;
 }
@@ -112,16 +119,18 @@ td.nd {
 }
 
 /* ===== Linha de Região ===== */
+
 tr.region-row td {
   background-color: #eef2f6;
   font-weight: 600;
   text-align: left;
   padding: 8px 14px;
-  font-size: 15px;
+  font-size: 14px;
   color: #2e3a46;
 }
 
 /* ===== Nome da unidade + telefone ===== */
+
 .unit-wrapper {
   display: flex;
   align-items: center;
@@ -129,6 +138,7 @@ tr.region-row td {
 }
 
 /* Ícone de telefone */
+
 .phone-icon {
   cursor: pointer;
   font-size: 14px;
@@ -136,7 +146,8 @@ tr.region-row td {
   position: relative;
 }
 
-/* Tooltip (balão) */
+/* Tooltip local (fallback) */
+
 .phone-tooltip {
   position: absolute;
   top: 22px;
@@ -148,16 +159,18 @@ tr.region-row td {
   font-size: 13px;
   white-space: nowrap;
   box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-  z-index: 9999;          /* 👈 MUITO IMPORTANTE */
+  z-index: 9999;
   display: none;
 }
 
 /* Tooltip visível */
+
 .phone-icon.active .phone-tooltip {
   display: block;
 }
 
 /* ===== Tooltip Global de Telefones ===== */
+
 .global-tooltip {
   position: fixed;
   background-color: #ffffff;
@@ -169,7 +182,7 @@ tr.region-row td {
   z-index: 10000;
   display: none;
   color: #000000;
-  text-align: center; /* 👈 centraliza tudo */
+  text-align: center;
 }
 
 .global-tooltip .tooltip-title {
@@ -181,3 +194,25 @@ tr.region-row td {
   line-height: 1.4;
 }
 
+/* ===== AJUSTES MOBILE ===== */
+
+@media (max-width: 768px) {
+
+  h1 {
+    font-size: 18px;
+  }
+
+  table.dashboard th,
+  table.dashboard td {
+    font-size: 12px;
+    padding: 6px 8px;
+  }
+
+  tr.region-row td {
+    font-size: 13px;
+  }
+
+  .phone-icon {
+    font-size: 13px;
+  }
+}
