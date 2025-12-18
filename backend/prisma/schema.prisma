@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["regulacao"]
+}
+
+
+
+model change_log {
+  id                Int               @id @default(autoincrement())
+  event_id          Int
+  operator_id       Int
+  field_name        String            @db.VarChar(100)
+  old_value         String?
+  new_value         String?
+  changed_at        DateTime          @default(now()) @db.Timestamp(6)
+  restriction_event restriction_event @relation(fields: [event_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_cl_event")
+  operator          operator          @relation(fields: [operator_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_cl_operator")
+  @@schema("regulacao")
+}
+
+model health_unit {
+  id                    Int                     @id @default(autoincrement())
+  name                  String                  @db.VarChar(255)
+  street                String                  @db.VarChar(255)
+  district              String                  @db.VarChar(255)
+  city                  String                  @db.VarChar(255)
+  zip_code              String                  @db.VarChar(20)
+  latitude              Float?
+  longitude             Float?
+  phone1                String                  @db.VarChar(30)
+  phone2                String?                 @db.VarChar(30)
+  phone3                String?                 @db.VarChar(30)
+  active                Boolean                 @default(true)
+  health_unit_specialty health_unit_specialty[]
+  restriction_event     restriction_event[]
+  @@schema("regulacao")
+}
+
+model health_unit_specialty {
+  id             Int         @id @default(autoincrement())
+  health_unit_id Int
+  specialty_id   Int
+  status         String      @default("available") @db.VarChar(20)
+  updated_at     DateTime    @default(now()) @db.Timestamp(6)
+  health_unit    health_unit @relation(fields: [health_unit_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_hus_health_unit")
+  specialty      specialty   @relation(fields: [specialty_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_hus_specialty")
+
+  @@unique([health_unit_id, specialty_id], map: "uq_hus")
+  @@index([status], map: "idx_hus_status")
+  @@schema("regulacao")
+}
+
+model operator {
+  id                Int                 @id @default(autoincrement())
+  rank              String              @db.VarChar(20)
+  registry          String              @db.VarChar(30)
+  nickname          String              @db.VarChar(100)
+  change_log        change_log[]
+  restriction_event restriction_event[]
+  @@schema("regulacao")
+}
+
+model restriction_event {
+  id               Int          @id @default(autoincrement())
+  health_unit_id   Int
+  specialty_id     Int
+  operator_id      Int
+  start_time       DateTime     @default(now()) @db.Timestamp(6)
+  end_time         DateTime?    @db.Timestamp(6)
+  duration_minutes Int?
+  doctor_name      String       @db.VarChar(255)
+  doctor_crm       String       @db.VarChar(50)
+  informant        String?      @db.VarChar(255)
+  reason           String?
+  close_type       String?      @db.VarChar(20)
+  change_log       change_log[]
+  health_unit      health_unit  @relation(fields: [health_unit_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_re_health_unit")
+  operator         operator     @relation(fields: [operator_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_re_operator")
+  specialty        specialty    @relation(fields: [specialty_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_re_specialty")
+
+  @@index([start_time, end_time], map: "idx_restriction_event_period")
+  @@schema("regulacao")
+}
+
+model specialty {
+  id                    Int                     @id @default(autoincrement())
+  name                  String                  @db.VarChar(100)
+  color                 String?                 @db.VarChar(20)
+  health_unit_specialty health_unit_specialty[]
+  restriction_event     restriction_event[]
+  @@schema("regulacao")
+}

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Operação – Restrição de Plantão</title>
+  <link rel="stylesheet" href="operacao.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Restrição de Plantão</h1>
+
+    <form id="restriction-form">
+      <div class="field">
+        <label for="healthUnit">Unidade de Saúde</label>
+        <select id="healthUnit" required>
+          <option value="">Selecione a unidade</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Especialidades</label>
+        <div id="specialties" class="checkbox-group">
+          <span class="hint">Selecione uma unidade</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="doctorName">Médico responsável</label>
+        <input id="doctorName" type="text" required />
+      </div>
+
+      <div class="field">
+        <label for="doctorCrm">CRM</label>
+        <input id="doctorCrm" type="text" required />
+      </div>
+
+      <div class="field">
+        <label for="reason">Motivo / Observação</label>
+        <textarea id="reason" rows="3"></textarea>
+      </div>
+
+      <div class="actions">
+        <button type="submit">Restringir plantão</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Modal de feedback (TEM que vir antes do script) -->
+  <div id="modal-overlay" class="modal-overlay hidden">
+    <div class="modal">
+      <div id="modal-message"></div>
+      <button id="modal-close">OK</button>
+    </div>
+  </div>
+
+  <!-- Script SEMPRE por último -->
+  <script src="operacao.js"></script>
+</body>
+</html>

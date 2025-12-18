@@ -1,0 +1,183 @@
+/* ===== Base ===== */
+
+body {
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+  background-color: #ffffff;
+  margin: 16px;
+  color: #1f2933;
+}
+
+h1 {
+  margin-bottom: 16px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* ===== Container ===== */
+
+.table-container {
+  display: inline-block;
+  max-width: 100%;
+  max-height: 70vh;
+  overflow: auto;
+  border: 1px solid #d0d5da;
+  border-radius: 6px;
+  position: relative;   /* 👈 cria contexto correto */
+}
+
+
+/* ===== Tabela ===== */
+
+table.dashboard {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: auto;          /* largura automática */
+  table-layout: auto;   /* baseado no maior conteúdo */
+}
+
+/* ===== Células ===== */
+
+table.dashboard th,
+table.dashboard td {
+  border-right: 1px solid #e1e4e8;
+  border-bottom: 1px solid #e1e4e8;
+  padding: 10px 14px;
+  text-align: center;
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+/* Remove bordas duplicadas */
+table.dashboard tr:last-child td {
+  border-bottom: none;
+}
+
+table.dashboard th:last-child,
+table.dashboard td:last-child {
+  border-right: none;
+}
+
+/* ===== Cabeçalho ===== */
+
+table.dashboard th {
+  background-color: #f5f7fa;
+  font-weight: 600;
+  color: #2e3a46;
+}
+
+/* ===== Primeira coluna (Unidades) ===== */
+
+td.unit {
+  background-color: #fafbfc;
+  text-align: left;
+  font-weight: 600;
+}
+
+/* ===== Sticky ===== */
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+}
+
+.sticky-col {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+
+th.sticky-col.sticky-header {
+  z-index: 4;
+}
+
+/* ===== Estados Operacionais ===== */
+
+td.available {
+  background-color: #2f7d4a; /* verde escuro */
+  color: #ffffff;
+  font-weight: 600;
+}
+
+td.restricted {
+  background-color: #9e3b32; /* vermelho escuro */
+  color: #ffffff;
+  font-weight: 600;
+}
+
+td.nd {
+  background-color: #ffffff;
+  color: #000000;
+  font-weight: normal;
+}
+
+/* ===== Linha de Região ===== */
+tr.region-row td {
+  background-color: #eef2f6;
+  font-weight: 600;
+  text-align: left;
+  padding: 8px 14px;
+  font-size: 15px;
+  color: #2e3a46;
+}
+
+/* ===== Nome da unidade + telefone ===== */
+.unit-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Ícone de telefone */
+.phone-icon {
+  cursor: pointer;
+  font-size: 14px;
+  color: #2e3a46;
+  position: relative;
+}
+
+/* Tooltip (balão) */
+.phone-tooltip {
+  position: absolute;
+  top: 22px;
+  left: 0;
+  background-color: #ffffff;
+  border: 1px solid #d0d5da;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 13px;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  z-index: 9999;          /* 👈 MUITO IMPORTANTE */
+  display: none;
+}
+
+/* Tooltip visível */
+.phone-icon.active .phone-tooltip {
+  display: block;
+}
+
+/* ===== Tooltip Global de Telefones ===== */
+.global-tooltip {
+  position: fixed;
+  background-color: #ffffff;
+  border: 1px solid #d0d5da;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 13px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  z-index: 10000;
+  display: none;
+  color: #000000;
+  text-align: center; /* 👈 centraliza tudo */
+}
+
+.global-tooltip .tooltip-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.global-tooltip div {
+  line-height: 1.4;
+}
+
