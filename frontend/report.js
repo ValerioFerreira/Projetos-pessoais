@@ -23,7 +23,6 @@ async function loadReportUnits() {
 
       card.innerHTML = `
         <h3>${unit.name}</h3>
-        <small>Clique para selecionar</small>
       `;
 
       card.addEventListener("click", () => {
