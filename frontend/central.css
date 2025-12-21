@@ -160,3 +160,65 @@ body {
 .hidden {
   display: none;
 }
+
+/* ===== GRID DE CARDS ===== */
+.unit-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 8px;
+}
+
+/* ===== CARD ===== */
+.unit-card {
+  background: #ffffff;
+  border: 1px solid #d0d5da;
+  border-radius: 8px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+  text-align: center;
+  font-weight: 600;
+  color: #1f2933;
+}
+
+/* Hover */
+.unit-card:hover {
+  transform: scale(1.04);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+/* Selecionado */
+.unit-card.selected {
+  background: #1f2937;
+  color: #ffffff;
+  border-color: #1f2937;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.35);
+}
+
+.unit-card h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.unit-card small {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+/* Responsivo */
+@media (max-width: 900px) {
+  .unit-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .unit-cards {
+    grid-template-columns: 1fr;
+  }
+}
