@@ -37,6 +37,12 @@
         <img src="images/open-lock-icon.png" class="menu-icon" />
         <span class="menu-text">Reabrir plantão</span>
       </a>
+
+      <!-- ✅ ITEM DE RELATÓRIOS (FALTAVA) -->
+      <a href="#" data-view="report">
+        <img src="images/report-icon.png" class="menu-icon" />
+        <span class="menu-text">Relatórios</span>
+      </a>
     </nav>
 
     <div class="sidebar-footer">
@@ -112,6 +118,34 @@
         <div id="reopen-container"></div>
       </div>
 
+      <!-- RELATÓRIOS -->
+      <div id="view-report" class="view hidden">
+        <h1>Gerar relatório de restrições</h1>
+
+        <form id="report-form" class="report-form">
+
+          <div class="field">
+            <label>Unidades de saúde</label>
+            <div id="report-units" class="checkbox-group"></div>
+          </div>
+
+          <div class="field">
+            <label for="report-start">Data inicial</label>
+            <input type="date" id="report-start" required />
+          </div>
+
+          <div class="field">
+            <label for="report-end">Data final</label>
+            <input type="date" id="report-end" required />
+          </div>
+
+          <div class="actions">
+            <button type="submit">Gerar relatório (PDF)</button>
+          </div>
+
+        </form>
+      </div>
+
     </section>
   </main>
 
@@ -121,6 +155,7 @@
 <script src="dashboard.js"></script>
 <script src="operacao.js"></script>
 <script src="reopen.js"></script>
+<script src="report.js"></script>
 <script src="central.js"></script>
 
 </body>

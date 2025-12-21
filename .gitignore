@@ -1,0 +1,19 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Env
+.env
+
+# Build / temporários
+*.pdf
+*.log
+*.tmp
+*.bak
+*backup*
+*bkp*
+
+# Sistema
+.DS_Store
+Thumbs.db

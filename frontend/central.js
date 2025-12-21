@@ -10,7 +10,9 @@ const links = document.querySelectorAll("nav a");
 const views = {
   dashboard: document.getElementById("view-dashboard"),
   close: document.getElementById("view-close"),
-  reopen: document.getElementById("view-reopen")
+  reopen: document.getElementById("view-reopen"),
+  report: document.getElementById("view-report")
+  
 };
 
 links.forEach(link => {
