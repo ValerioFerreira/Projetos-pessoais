@@ -12,112 +12,215 @@ body {
 .layout {
   display: flex;
   min-height: 100vh;
+  background: #f4f6f8;
 }
 
 /* ===== SIDEBAR ===== */
+
+/* ===== SIDEBAR BASE ===== */
+
 .sidebar {
-  width: 220px;
-  background: #b91c1c;
+  width: 230px;
+  background-color: #8b1d1d;
   color: #ffffff;
   display: flex;
   flex-direction: column;
   transition: width 0.25s ease;
+  overflow: hidden;
+  padding: 7px;
+  box-sizing: border-box;
 }
 
+/* Colapsada */
 .sidebar.collapsed {
   width: 56px;
 }
 
-/* HEADER */
+/* Expande no hover */
+.sidebar:hover {
+  width: 230px;
+}
+
+/* ===== HEADER ===== */
+
 .sidebar-header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 14px;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 14px 12px;
 }
 
-.logo-text {
-  font-weight: 600;
-  font-size: 15px;
-}
-
-.sidebar.collapsed .logo-text {
-  display: none;
-}
-
-/* BOTÃO MENU */
+/* Botão menu */
 #toggleMenu {
   background: none;
   border: none;
   color: #ffffff;
   font-size: 20px;
   cursor: pointer;
+  padding: 0px;
 }
 
-/* MENU */
-.sidebar nav {
-  flex: 1;
+/* Logo */
+.logo-text {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: normal;
+  overflow-wrap: break-word;
+  transition: opacity 0.2s ease;
 }
 
-.sidebar nav a {
+/* Esconde logo ao colapsar */
+.sidebar.collapsed .logo-text {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* MOSTRA logo quando hover */
+.sidebar.collapsed:hover .logo-text {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+/* ===== MENU ===== */
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+}
+
+.menu a {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  padding: 12px;
   color: #ffffff;
   text-decoration: none;
-  padding: 10px 14px;
   font-size: 14px;
-  transition: background 0.2s;
+  transition: background 0.2s ease;
 }
 
-.sidebar nav a:hover,
-.sidebar nav a.active {
-  background: rgba(255, 255, 255, 0.15);
+.menu a:hover {
+  background-color: rgba(255, 255, 255, 0.15);
 }
 
-/* ÍCONES */
+.menu a.active {
+  background-color: rgba(255, 255, 255, 0.22);
+  font-weight: 600;
+}
+
+/* Ícones */
 .menu-icon {
-  width: 18px;
-  height: 18px;
+  width: 35px;
+  height: 35px;
+  flex-shrink: 0;
+
+  /* preto → branco */
+  filter: invert(1) brightness(2);
 }
 
-/* TEXTO */
+/* Texto */
 .menu-text {
   white-space: nowrap;
+  transition: opacity 0.2s ease;
 }
 
-/* COLAPSADO */
-.sidebar.collapsed nav a {
-  justify-content: center;
-  padding: 10px 0;
-}
-
+/* Esconde texto quando colapsada */
 .sidebar.collapsed .menu-text {
-  display: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
-.sidebar.collapsed .menu-icon {
-  margin: 0;
+
+/* MOSTRA textos ao expandir no hover */
+.sidebar.collapsed:hover .menu-text {
+  opacity: 1;
+  pointer-events: auto;
 }
 
-.sidebar.collapsed .sidebar-header {
-  justify-content: center;
-}
+/* ===== FOOTER ===== */
 
-/* FOOTER */
 .sidebar-footer {
+  margin-top: auto;
   padding: 12px;
 }
 
+/* Botão sair */
 .logout {
   width: 100%;
-  background: rgba(0, 0, 0, 0.25);
-  border: none;
+  background: none;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.4);
   color: #ffffff;
   padding: 8px;
   border-radius: 4px;
   cursor: pointer;
 }
+
+.logout:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+
+/* ===== MENU ===== */
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+}
+
+/* Links */
+.menu a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+/* Hover */
+.menu a:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Ativo */
+.menu a.active {
+  background-color: rgba(255, 255, 255, 0.18);
+  font-weight: 600;
+}
+
+/* ===== ÍCONES ===== */
+
+.menu-icon {
+  width: 20px;
+  height: 20px;
+
+  /* 🔥 transforma ícone preto em branco */
+  filter: invert(1) brightness(2);
+
+  flex-shrink: 0;
+}
+
+/* ===== TEXTO ===== */
+
+.menu-text {
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+}
+
+/* Esconde texto quando colapsado */
+.sidebar.collapsed .menu-text {
+  opacity: 0;
+  pointer-events: none;
+}
+
 
 /* ===== MAIN ===== */
 .main {

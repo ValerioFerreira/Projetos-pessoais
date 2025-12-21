@@ -1,7 +1,7 @@
 const API_URL = "http://localhost:3001/health-units/status";
 
 /* =============================
-   REGIÕES POR ID (NÃO POR NOME)
+   REGIÕES POR ID
 ============================= */
 const REGIONS = {
   "ÁREA NORTE": [1, 2, 6, 3, 4, 18, 16, 17],
@@ -47,6 +47,7 @@ function renderDashboard(units) {
   const headerRow = document.createElement("tr");
 
   headerRow.appendChild(document.createElement("th")); // Região
+
   const thUnit = document.createElement("th");
   thUnit.textContent = "Unidade";
   headerRow.appendChild(thUnit);
@@ -76,9 +77,16 @@ function renderDashboard(units) {
       if (firstRow) {
         const regionTd = document.createElement("td");
         regionTd.className = "region-cell";
+
+        // 👉 destaque apenas da ÁREA SUL
+        if (regionName === "ÁREA SUL") {
+          regionTd.classList.add("region-sul");
+        }
+
         regionTd.rowSpan = unitIds.length;
         regionTd.textContent = regionName;
         tr.appendChild(regionTd);
+
         firstRow = false;
       }
 

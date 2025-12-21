@@ -1,3 +1,5 @@
+/* ===== BASE ===== */
+
 body {
   font-family: "Inter", "Segoe UI", Arial, sans-serif;
   background-color: #ffffff;
@@ -15,6 +17,8 @@ h1 {
   overflow-x: auto;
 }
 
+/* ===== TABELA ===== */
+
 table.dashboard {
   width: 100%;
   border-collapse: separate;
@@ -25,10 +29,11 @@ table.dashboard {
 table.dashboard thead th {
   background-color: #f9fafb;
   color: #6b7280;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: medium;
   text-align: center;
   padding: 12px 16px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 3px solid #e5e7eb;
 }
 
 table.dashboard tbody td {
@@ -42,6 +47,7 @@ table.dashboard tbody tr:nth-child(even) {
 }
 
 /* ===== COLUNA REGIÃO ===== */
+
 td.region-cell {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
@@ -52,7 +58,13 @@ td.region-cell {
   border-right: 1px solid #e5e7eb;
 }
 
+/* 👉 Destaque apenas da ÁREA SUL */
+td.region-cell.region-sul {
+  background-color: #e5e7eb; /* levemente mais escura */
+}
+
 /* ===== UNIDADE ===== */
+
 td.unit {
   font-weight: 600;
   color: #111827;
@@ -60,11 +72,11 @@ td.unit {
 }
 
 /* ===== STATUS ===== */
+
 td.status-cell {
   text-align: center;
 }
 
-/* Badges */
 .status-badge {
   display: inline-flex;
   align-items: center;
@@ -76,15 +88,15 @@ td.status-cell {
   min-width: 90px;
 }
 
-/* Aberto (Progress) */
+/* Aberto */
 .status-open {
-  background-color: #1f7a4a; /* verde escuro */
+  background-color: #1f7a4a;
   color: #ffffff;
 }
 
-/* Restrito (On hold) */
+/* Restrito */
 .status-restricted {
-  background-color: #8b2c2c; /* vermelho escuro */
+  background-color: #8b2c2c;
   color: #ffffff;
 }
 

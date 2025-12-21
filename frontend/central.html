@@ -16,13 +16,16 @@
 <div class="layout">
 
   <!-- SIDEBAR -->
-  <aside id="sidebar" class="sidebar">
+  <aside id="sidebar" class="sidebar collapsed">
+
+    <!-- HEADER -->
     <div class="sidebar-header">
-      <button id="toggleMenu">☰</button>
-      <span class="logo-text">Regulação</span>
+      <button id="toggleMenu" aria-label="Menu">☰</button>
+      <span class="logo-text">Disponibilidades das Unidades de Saúde</span>
     </div>
 
-    <nav>
+    <!-- MENU -->
+    <nav class="menu">
       <a href="#" data-view="dashboard" class="active">
         <img src="images/dashboard-icon.png" class="menu-icon" />
         <span class="menu-text">Dashboard</span>
@@ -38,35 +41,29 @@
         <span class="menu-text">Reabrir plantão</span>
       </a>
 
-      <!-- ✅ ITEM DE RELATÓRIOS (FALTAVA) -->
       <a href="#" data-view="report">
         <img src="images/report-icon.png" class="menu-icon" />
-        <span class="menu-text">Relatórios</span>
+        <span class="menu-text">Gerar relatório</span>
       </a>
     </nav>
 
+    <!-- FOOTER -->
     <div class="sidebar-footer">
       <button class="logout">Sair</button>
     </div>
+
   </aside>
+
+
 
   <!-- MAIN -->
   <main class="main">
-
-    <!-- TOPBAR -->
-    <header class="topbar">
-      <div class="user">
-        <span class="name">CB Valerio</span>
-        <span class="dept">Central de Regulação</span>
-      </div>
-    </header>
 
     <!-- CONTENT -->
     <section class="content">
 
       <!-- DASHBOARD -->
       <div id="view-dashboard" class="view">
-        <h1>Disponibilidade de Unidades de Saúde</h1>
         <div id="dashboard"></div>
       </div>
 
@@ -75,7 +72,6 @@
         <h1>Fechar plantão</h1>
 
         <form id="restriction-form">
-
           <div class="field">
             <label for="healthUnit">Unidade de Saúde</label>
             <select id="healthUnit" required>
@@ -108,7 +104,6 @@
           <div class="actions">
             <button type="submit">Restringir plantão</button>
           </div>
-
         </form>
       </div>
 
@@ -116,34 +111,6 @@
       <div id="view-reopen" class="view hidden">
         <h1>Reabrir plantão</h1>
         <div id="reopen-container"></div>
-      </div>
-
-      <!-- RELATÓRIOS -->
-      <div id="view-report" class="view hidden">
-        <h1>Gerar relatório de restrições</h1>
-
-        <form id="report-form" class="report-form">
-
-          <div class="field">
-            <label>Unidades de saúde</label>
-            <div id="report-units" class="unit-cards"></div>
-          </div>
-
-          <div class="field">
-            <label for="report-start">Data inicial</label>
-            <input type="date" id="report-start" required />
-          </div>
-
-          <div class="field">
-            <label for="report-end">Data final</label>
-            <input type="date" id="report-end" required />
-          </div>
-
-          <div class="actions">
-            <button type="submit">Gerar relatório (PDF)</button>
-          </div>
-
-        </form>
       </div>
 
     </section>
@@ -155,7 +122,6 @@
 <script src="dashboard.js"></script>
 <script src="operacao.js"></script>
 <script src="reopen.js"></script>
-<script src="report.js"></script>
 <script src="central.js"></script>
 
 </body>
