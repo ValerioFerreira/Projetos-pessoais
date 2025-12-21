@@ -1,35 +1,12 @@
 const API_URL = "http://localhost:3001/health-units/status";
 
 /* =============================
-   DEFINIÇÃO DAS REGIÕES
+   REGIÕES POR ID (NÃO POR NOME)
 ============================= */
 const REGIONS = {
-  "ÁREA NORTE": [
-    "UPA Olinda",
-    "UPA Igarassu",
-    "UPA Nova Descoberta",
-    "UPA Rio Doce",
-    "UPA Paulista",
-    "HOSP. TRICENTENÁRIO",
-    "Policlínica Amaury Coutinho",
-    "Policlínica Torres Galvão"
-  ],
-  "ÁREA SUL": [
-    "UPA Imbiribeira",
-    "UPA Ibura",
-    "UPA Engenho Velho",
-    "UPA Barra de Jangada",
-    "UPA SOTAVE",
-    "UPA Cabo",
-    "UPA Ipojuca"
-  ],
-  "ÁREA OESTE": [
-    "UPA Caxangá",
-    "UPA Torrões",
-    "UPA Curado",
-    "UPA São Lourenço da Mata",
-    "HOSP. PETRONILA CAMPOS"
-  ]
+  "ÁREA NORTE": [1, 2, 6, 3, 4, 18, 16, 17],
+  "ÁREA SUL": [11, 12, 10, 13, 20, 14, 15],
+  "ÁREA OESTE": [7, 8, 9, 5, 19]
 };
 
 const SPECIALTIES_ORDER = [
@@ -42,7 +19,7 @@ const SPECIALTIES_ORDER = [
 ];
 
 /* =============================
-   CARREGAMENTO
+   LOAD
 ============================= */
 async function loadDashboard() {
   try {
@@ -55,7 +32,7 @@ async function loadDashboard() {
 }
 
 /* =============================
-   RENDERIZAÇÃO
+   RENDER
 ============================= */
 function renderDashboard(units) {
   const container = document.getElementById("dashboard");
@@ -66,10 +43,10 @@ function renderDashboard(units) {
   const table = document.createElement("table");
   table.className = "dashboard";
 
-  /* ===== HEADER ===== */
   const thead = document.createElement("thead");
   const headerRow = document.createElement("tr");
 
+  headerRow.appendChild(document.createElement("th")); // Região
   const thUnit = document.createElement("th");
   thUnit.textContent = "Unidade";
   headerRow.appendChild(thUnit);
@@ -83,29 +60,27 @@ function renderDashboard(units) {
   thead.appendChild(headerRow);
   table.appendChild(thead);
 
-  /* ===== BODY ===== */
   const tbody = document.createElement("tbody");
 
-  const unitMap = new Map(units.map(u => [u.name, u]));
+  const unitMap = new Map(units.map(u => [u.id, u]));
 
-  Object.entries(REGIONS).forEach(([regionName, unitNames]) => {
-    // Linha da região
-    const regionRow = document.createElement("tr");
-    regionRow.className = "region-row";
+  Object.entries(REGIONS).forEach(([regionName, unitIds]) => {
+    let firstRow = true;
 
-    const regionCell = document.createElement("td");
-    regionCell.colSpan = SPECIALTIES_ORDER.length + 1;
-    regionCell.textContent = regionName;
-
-    regionRow.appendChild(regionCell);
-    tbody.appendChild(regionRow);
-
-    // Unidades
-    unitNames.forEach(unitName => {
-      const unit = unitMap.get(unitName);
+    unitIds.forEach(unitId => {
+      const unit = unitMap.get(unitId);
       if (!unit) return;
 
       const tr = document.createElement("tr");
+
+      if (firstRow) {
+        const regionTd = document.createElement("td");
+        regionTd.className = "region-cell";
+        regionTd.rowSpan = unitIds.length;
+        regionTd.textContent = regionName;
+        tr.appendChild(regionTd);
+        firstRow = false;
+      }
 
       const unitTd = document.createElement("td");
       unitTd.className = "unit";
@@ -137,7 +112,4 @@ function renderDashboard(units) {
   container.appendChild(table);
 }
 
-/* =============================
-   INIT
-============================= */
 document.addEventListener("DOMContentLoaded", loadDashboard);
