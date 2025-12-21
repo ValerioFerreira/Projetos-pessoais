@@ -2,9 +2,19 @@ import cors from "cors";
 import express from "express";
 import dotenv from "dotenv";
 
+
 import healthUnitRoutes from "./routes/healthUnit.routes.js";
 import restrictionRoutes from "./routes/restriction.routes.js";
 import { handleShiftChange } from "./services/shiftChange.service.js";
+import reportRoutes from "./routes/report.routes.js";
+
+
+
+
+
+
+
+
 
 
 
@@ -18,6 +28,7 @@ app.use(express.json());
 app.use("/restrictions", restrictionRoutes);
 app.use(healthUnitRoutes);
 app.use(restrictionRoutes);
+app.use("/reports", reportRoutes);
 
 app.get("/health", (req, res) => {
   res.json({ status: "ok" });
