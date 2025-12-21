@@ -1,7 +1,5 @@
 const API_URL = "http://localhost:3001/health-units/status";
 
-let lastData = null;
-
 /* =============================
    DEFINIÇÃO DAS REGIÕES
 ============================= */
@@ -48,12 +46,11 @@ const SPECIALTIES_ORDER = [
 ============================= */
 async function loadDashboard() {
   try {
-    const response = await fetch(API_URL);
-    const data = await response.json();
-    lastData = data;
+    const res = await fetch(API_URL);
+    const data = await res.json();
     renderDashboard(data);
-  } catch (error) {
-    console.error("Erro ao carregar dashboard:", error);
+  } catch (err) {
+    console.error("Erro ao carregar dashboard:", err);
   }
 }
 
@@ -62,16 +59,12 @@ async function loadDashboard() {
 ============================= */
 function renderDashboard(units) {
   const container = document.getElementById("dashboard");
-
-  // 🔒 Defesa absoluta
-  if (!container || !Array.isArray(units)) {
-    return;
-  }
+  if (!container) return;
 
   container.innerHTML = "";
 
   const table = document.createElement("table");
-  table.className = "dashboard-table";
+  table.className = "dashboard";
 
   /* ===== HEADER ===== */
   const thead = document.createElement("thead");
@@ -92,9 +85,11 @@ function renderDashboard(units) {
 
   /* ===== BODY ===== */
   const tbody = document.createElement("tbody");
+
   const unitMap = new Map(units.map(u => [u.name, u]));
 
   Object.entries(REGIONS).forEach(([regionName, unitNames]) => {
+    // Linha da região
     const regionRow = document.createElement("tr");
     regionRow.className = "region-row";
 
@@ -105,6 +100,7 @@ function renderDashboard(units) {
     regionRow.appendChild(regionCell);
     tbody.appendChild(regionRow);
 
+    // Unidades
     unitNames.forEach(unitName => {
       const unit = unitMap.get(unitName);
       if (!unit) return;
@@ -112,22 +108,22 @@ function renderDashboard(units) {
       const tr = document.createElement("tr");
 
       const unitTd = document.createElement("td");
+      unitTd.className = "unit";
       unitTd.textContent = unit.name;
       tr.appendChild(unitTd);
 
       SPECIALTIES_ORDER.forEach(specName => {
         const td = document.createElement("td");
+        td.className = "status-cell";
+
         const spec = unit.specialties.find(s => s.name === specName);
 
         if (!spec) {
-          td.textContent = "N/D";
-          td.className = "nd";
+          td.innerHTML = `<span class="status-nd">-</span>`;
         } else if (spec.status === "restricted") {
-          td.textContent = "RESTRITO";
-          td.className = "restricted";
+          td.innerHTML = `<span class="status-badge status-restricted">RESTRITO</span>`;
         } else {
-          td.textContent = "DISPONÍVEL";
-          td.className = "available";
+          td.innerHTML = `<span class="status-badge status-open">ABERTO</span>`;
         }
 
         tr.appendChild(td);
@@ -142,28 +138,6 @@ function renderDashboard(units) {
 }
 
 /* =============================
-   REEXIBIÇÃO
-============================= */
-function refreshDashboardView() {
-  if (lastData) {
-    renderDashboard(lastData);
-  }
-}
-
-/* =============================
    INIT
 ============================= */
-document.addEventListener("DOMContentLoaded", () => {
-  loadDashboard();
-});
-
-window.loadDashboard = loadDashboard;
-
 document.addEventListener("DOMContentLoaded", loadDashboard);
-
-// Atualização automática simples (polling)
-setInterval(() => {
-  loadDashboard();
-}, 10000); // 10 segundos
-
-
