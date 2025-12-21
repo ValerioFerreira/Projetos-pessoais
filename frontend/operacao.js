@@ -130,4 +130,5 @@ document.addEventListener("submit", async e => {
 /* =============================
    EXPOR PARA A CENTRAL
 ============================= */
-window.loadUnits = loadUnits;
+
+window.loadUnitsForOperation = loadUnits;
