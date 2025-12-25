@@ -1,10 +1,9 @@
 const API_STATUS = "http://localhost:3001/health-units/status";
 const API_RESTRICT = "http://localhost:3001/restrictions";
-
-// ajuste se quiser fixar operador
 const OPERATOR_ID = 1;
 
 let unitsCache = [];
+let selectedSpecialties = new Set();
 
 /* =============================
    CARREGAR UNIDADES
@@ -14,54 +13,56 @@ async function loadUnits() {
   if (!select) return;
 
   select.innerHTML = `<option value="">Selecione a unidade</option>`;
-  unitsCache = [];
+  selectedSpecialties.clear();
 
-  try {
-    const res = await fetch(API_STATUS);
-    const data = await res.json();
-    unitsCache = data;
+  const res = await fetch(API_STATUS);
+  unitsCache = await res.json();
 
-    data.forEach(u => {
-      const opt = document.createElement("option");
-      opt.value = u.id;
-      opt.textContent = u.name;
-      select.appendChild(opt);
-    });
+  unitsCache.forEach(u => {
+    const opt = document.createElement("option");
+    opt.value = u.id;
+    opt.textContent = u.name;
+    select.appendChild(opt);
+  });
 
-  } catch (err) {
-    console.error("Erro ao carregar unidades:", err);
-  }
+  renderSpecialties(null);
 }
 
 /* =============================
-   ESPECIALIDADES
+   RENDERIZAR ESPECIALIDADES
 ============================= */
 function renderSpecialties(unitId) {
   const container = document.getElementById("specialties");
   container.innerHTML = "";
+  selectedSpecialties.clear();
 
-  const unit = unitsCache.find(u => u.id === Number(unitId));
-  if (!unit) {
+  if (!unitId) {
     container.innerHTML = `<span class="hint">Selecione uma unidade</span>`;
     return;
   }
 
-  if (!unit.specialties || unit.specialties.length === 0) {
-    container.innerHTML = `<span class="hint">Nenhuma especialidade vinculada</span>`;
+  const unit = unitsCache.find(u => u.id === Number(unitId));
+  if (!unit || !unit.specialties.length) {
+    container.innerHTML = `<span class="hint">Nenhuma especialidade disponível</span>`;
     return;
   }
 
-  unit.specialties.forEach(s => {
-    const label = document.createElement("label");
-    label.className = "checkbox-item";
+  unit.specialties.forEach(spec => {
+    const card = document.createElement("div");
+    card.className = "specialty-card";
+    card.textContent = spec.name;
 
-    const cb = document.createElement("input");
-    cb.type = "checkbox";
-    cb.value = s.id;
+    card.addEventListener("click", () => {
+      if (selectedSpecialties.has(spec.id)) {
+        selectedSpecialties.delete(spec.id);
+        card.classList.remove("selected");
+      } else {
+        selectedSpecialties.add(spec.id);
+        card.classList.add("selected");
+      }
+    });
 
-    label.appendChild(cb);
-    label.appendChild(document.createTextNode(" " + s.name));
-    container.appendChild(label);
+    container.appendChild(card);
   });
 }
 
@@ -69,7 +70,7 @@ function renderSpecialties(unitId) {
    EVENTOS
 ============================= */
 document.addEventListener("change", e => {
-  if (e.target?.id === "healthUnit") {
+  if (e.target.id === "healthUnit") {
     renderSpecialties(e.target.value);
   }
 });
@@ -78,8 +79,7 @@ document.addEventListener("change", e => {
    SUBMIT
 ============================= */
 document.addEventListener("submit", async e => {
-  if (e.target?.id !== "restriction-form") return;
-
+  if (e.target.id !== "restriction-form") return;
   e.preventDefault();
 
   const healthUnitId = Number(document.getElementById("healthUnit").value);
@@ -87,48 +87,31 @@ document.addEventListener("submit", async e => {
   const doctorCrm = document.getElementById("doctorCrm").value.trim();
   const reason = document.getElementById("reason").value.trim();
 
-  const specialtyIds = Array.from(
-    document.querySelectorAll("#specialties input[type=checkbox]:checked")
-  ).map(cb => Number(cb.value));
-
-  if (!healthUnitId || specialtyIds.length === 0) {
+  if (!healthUnitId || selectedSpecialties.size === 0) {
     alert("Selecione a unidade e ao menos uma especialidade.");
     return;
   }
 
-  try {
-    const res = await fetch(API_RESTRICT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        health_unit_id: healthUnitId,
-        specialty_ids: specialtyIds,
-        doctor_name: doctorName,
-        doctor_crm: doctorCrm,
-        reason,
-        operator_id: OPERATOR_ID
-      })
-    });
+  await fetch(API_RESTRICT, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      health_unit_id: healthUnitId,
+      specialty_ids: Array.from(selectedSpecialties),
+      doctor_name: doctorName,
+      doctor_crm: doctorCrm,
+      reason,
+      operator_id: OPERATOR_ID
+    })
+  });
 
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message);
+  alert("Restrição registrada com sucesso.");
 
-    alert("Restrição registrada com sucesso.");
-
-    e.target.reset();
-    document.getElementById("specialties").innerHTML =
-      `<span class="hint">Selecione uma unidade</span>`;
-
-    // Atualiza dashboard imediatamente
-    window.loadDashboard?.();
-
-  } catch (err) {
-    alert(err.message);
-  }
+  document.getElementById("restriction-form").reset();
+  renderSpecialties(null);
 });
 
 /* =============================
-   EXPOR PARA A CENTRAL
+   EXPOSIÇÃO PARA CENTRAL
 ============================= */
-
 window.loadUnitsForOperation = loadUnits;

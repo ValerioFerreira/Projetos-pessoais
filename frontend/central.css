@@ -143,26 +143,49 @@ body {
 
 /* ===== FOOTER ===== */
 
+/* ===== FOOTER ===== */
 .sidebar-footer {
   margin-top: auto;
   padding: 12px;
 }
 
-/* Botão sair */
-.logout {
-  width: 100%;
-  background: none;
+/* mesmo comportamento do menu */
+.logout-link {
+  display: flex;
   align-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  gap: 12px;
+  padding: 0px;
   color: #ffffff;
-  padding: 8px;
+  text-decoration: none;
+  font-size: 16px;
   border-radius: 4px;
-  cursor: pointer;
+  transition: background 0.2s ease;
 }
 
-.logout:hover {
-  background-color: rgba(255, 255, 255, 0.15);
+.logout-link:hover {
+  background: rgba(255, 255, 255, 0.15);
 }
+
+/* ícone igual aos outros */
+.logout-link .menu-icon {
+  width: 24px;
+  height: 24px;
+  filter: invert(1) brightness(2);
+}
+
+/* quando colapsada → só o ícone aparece automaticamente,
+   porque já herdamos a regra global */
+.sidebar.collapsed .menu-text {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sidebar.collapsed:hover .menu-text {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
 
 
 /* ===== MENU ===== */
@@ -325,3 +348,4 @@ body {
     grid-template-columns: 1fr;
   }
 }
+

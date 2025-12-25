@@ -4,6 +4,7 @@ const API_REOPEN_LIST = "http://localhost:3001/restrictions/active";
    UTIL – FORMATAR DATA/HORA
 ============================= */
 function formatDateTime(dateStr) {
+  if (!dateStr) return "—";
   const d = new Date(dateStr);
   return d.toLocaleDateString("pt-BR") + " " +
          d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
@@ -28,40 +29,37 @@ async function loadReopenList() {
     }
 
     const table = document.createElement("table");
-    table.className = "dashboard-table";
+    table.className = "dashboard reopen-table";
 
-    /* ===== HEADER ===== */
     const thead = document.createElement("thead");
     thead.innerHTML = `
       <tr>
         <th>Unidade</th>
         <th>Especialidade</th>
         <th>Plantão fechado desde</th>
-        <th></th>
+        <th>Ação</th>
       </tr>
     `;
-    table.appendChild(thead);
 
-    /* ===== BODY ===== */
     const tbody = document.createElement("tbody");
 
     data.forEach(item => {
       const unitName = item.health_unit?.name || "—";
       const specialtyName = item.specialty?.name || "—";
-      const startTime = item.start_time
-        ? formatDateTime(item.start_time)
-        : "—";
+      const startTime = formatDateTime(item.start_time);
 
       const tr = document.createElement("tr");
-
       tr.innerHTML = `
-        <td>${unitName}</td>
-        <td>${specialtyName}</td>
-        <td>${startTime}</td>
-        <td>
+        <td class="unit" style="text-align:center">${unitName}</td>
+        <td style="text-align:center">
+          <span class="status-badge restricted">${specialtyName}</span>
+        </td>
+        <td style="text-align:center">${startTime}</td>
+        <td style="text-align:center">
           <button class="reopen-btn">Reabrir</button>
         </td>
       `;
+
 
       tr.querySelector("button").addEventListener("click", async () => {
         await reopenRestriction(item.id);
@@ -70,6 +68,7 @@ async function loadReopenList() {
       tbody.appendChild(tr);
     });
 
+    table.appendChild(thead);
     table.appendChild(tbody);
     container.appendChild(table);
 
@@ -89,7 +88,12 @@ async function reopenRestriction(id) {
       { method: "POST" }
     );
 
-    const data = await res.json();
+    const contentType = res.headers.get("content-type");
+
+    let data = {};
+    if (contentType && contentType.includes("application/json")) {
+      data = await res.json();
+    }
 
     if (!res.ok) {
       throw new Error(data.message || "Erro ao reabrir plantão");
@@ -109,6 +113,10 @@ async function reopenRestriction(id) {
 }
 
 /* =============================
-   EXPOSIÇÃO GLOBAL
+   INIT
 ============================= */
+document.addEventListener("DOMContentLoaded", () => {
+  loadReopenList();
+});
+
 window.loadReopenList = loadReopenList;

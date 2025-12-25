@@ -60,7 +60,7 @@ input, select, textarea {
 
 button {
   padding: 10px 16px;
-  background: #1f6feb;
+  background: #7a2c25;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -68,7 +68,7 @@ button {
 }
 
 button:hover {
-  background: #1a5fd0;
+  background: #9e3b32;
 }
 
 .feedback {
@@ -128,12 +128,60 @@ button:hover {
 #modal-close {
   padding: 8px 16px;
   border: none;
-  background: #1f6feb;
+  background: #7a2c25;
   color: #fff;
   border-radius: 4px;
   cursor: pointer;
 }
 
 #modal-close:hover {
-  background: #1a5fd0;
+  background: #9e3b32;
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* ===== GRID DE ESPECIALIDADES ===== */
+
+.specialty-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.specialty-card {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 14px;
+  text-align: center;
+  cursor: pointer;
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.specialty-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+
+.specialty-card.selected {
+  background-color: #9e3b32;
+  color: #ffffff;
+  border-color: #7a2c25;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+}
+
+.hint {
+  font-size: 14px;
+  color: #6b7280;
 }
