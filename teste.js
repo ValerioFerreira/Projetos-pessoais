@@ -34,13 +34,6 @@ export async function generateRestrictionReport({
   start_date,
   end_date
 }) {
-
-  const startDate = new Date(start_date);
-  startDate.setHours(0, 0, 0, 0);
-
-  const endDate = new Date(end_date);
-  endDate.setHours(23, 59, 59, 999);
-
   const templatePath = path.resolve(
     "src/reports/report.template.html"
   );
@@ -62,7 +55,7 @@ export async function generateRestrictionReport({
     });
 
     /* =============================
-       CTE BASE
+       CTE BASE  (CORRIGIDA)
     ============================= */
 
     const baseQuery = `
@@ -76,33 +69,30 @@ export async function generateRestrictionReport({
           COALESCE(re.end_time, NOW()) AS end_time,
           EXTRACT(
             EPOCH FROM (
-              LEAST(COALESCE(re.end_time, NOW()), ($2::date + INTERVAL '1 day'))
+              LEAST(COALESCE(re.end_time, NOW()), $2)
               -
-              GREATEST(re.start_time, $1::date)
+              GREATEST(re.start_time, $1)
             )
           ) / 60 AS duration_minutes
         FROM regulacao.restriction_event re
         WHERE
           re.health_unit_id = $3
-          AND re.start_time < ($2::date + INTERVAL '1 day')
-          AND (re.end_time IS NULL OR re.end_time >= $1::date)
+          AND re.start_time <= $2
+          AND COALESCE(re.end_time, NOW()) >= $1
       )
     `;
 
-    // TOTAL
     const [total] = await prisma.$queryRawUnsafe(
       `
       ${baseQuery}
       SELECT COALESCE(SUM(duration_minutes), 0) AS total
       FROM events_in_period
       `,
-      startDate,
-      endDate,
+      start_date,
+      end_date,
       unitId
     );
-    console.log("TOTAL CALCULADO:", total);
 
-    // MÉDICOS
     const doctors = await prisma.$queryRawUnsafe(
       `
       ${baseQuery}
@@ -114,13 +104,11 @@ export async function generateRestrictionReport({
       ORDER BY time DESC
       LIMIT 5
       `,
-      startDate,
-      endDate,
+      start_date,
+      end_date,
       unitId
     );
-    console.log("MEDICOS:", doctors);
 
-    // ESPECIALIDADES
     const specialties = await prisma.$queryRawUnsafe(
       `
       ${baseQuery}
@@ -133,13 +121,11 @@ export async function generateRestrictionReport({
       ORDER BY time DESC
       LIMIT 5
       `,
-      startDate,
-      endDate,
+      start_date,
+      end_date,
       unitId
     );
-    console.log("ESPECIALIDADES:", specialties);
 
-    // HORAS
     const hours = await prisma.$queryRawUnsafe(
       `
       ${baseQuery}
@@ -151,12 +137,10 @@ export async function generateRestrictionReport({
       ORDER BY time DESC
       LIMIT 5
       `,
-      startDate,
-      endDate,
+      start_date,
+      end_date,
       unitId
     );
-    console.log("HORAS:", hours);
-
 
     const unitBlock = `
       <div class="unit ${i > 0 ? "page-break" : ""}">

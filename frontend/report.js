@@ -73,7 +73,16 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    // ===== LOG DE DIAGNÓSTICO =====
+    console.log("==== ENVIO DO RELATÓRIO ====");
+    console.log({
+      health_unit_ids: selectedUnitIds,
+      start_date: start,
+      end_date: end
+    });
+
     try {
+
       const res = await fetch(API_REPORT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -103,3 +112,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+

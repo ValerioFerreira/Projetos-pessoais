@@ -54,7 +54,9 @@ links.forEach(link => {
 
     if (viewName === "close" && typeof window.loadUnitsForOperation === "function") {
       window.loadUnitsForOperation();
-    }
+    
+
 
   });
 });
+
