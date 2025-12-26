@@ -225,8 +225,13 @@ export async function generateRestrictionReport({
     unitsHtml += unitBlock;
   }
 
+  function formatDateBR(dateStr) {
+    const d = new Date(dateStr);
+    return d.toLocaleDateString("pt-BR", {timeZone: "UTC"});
+  }
+
   html = html
-    .replace("{{PERIODO}}", `${start_date} a ${end_date}`)
+    .replace("{{PERIODO}}", `${formatDateBR(start_date)} a ${formatDateBR(end_date)}`)
     .replace("{{DATA_GERACAO}}", new Date().toLocaleDateString())
     .replace("{{UNIDADES}}", unitsHtml);
 
