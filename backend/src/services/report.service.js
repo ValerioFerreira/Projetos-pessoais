@@ -87,6 +87,7 @@ export async function generateRestrictionReport({
           AND re.start_time < ($2::date + INTERVAL '1 day')
           AND (re.end_time IS NULL OR re.end_time >= $1::date)
       )
+
     `;
 
     // TOTAL
