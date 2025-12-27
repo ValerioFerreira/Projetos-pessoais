@@ -5,6 +5,6 @@ export default defineConfig({
 
   datasource: {
     provider: "postgresql",
-    url: { fromEnvVar: "DATABASE_URL" }
+    url: process.env.DATABASE_URL
   }
 });
