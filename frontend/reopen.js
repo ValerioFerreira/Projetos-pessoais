@@ -1,4 +1,4 @@
-const API_REOPEN_LIST = "http://localhost:3001/restrictions/active";
+const API_REOPEN_LIST = "https://disponibilidade-das-unidades-de-saude.onrender.com/restrictions/active";
 
 /* =============================
    UTIL – FORMATAR DATA/HORA

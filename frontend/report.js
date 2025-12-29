@@ -1,5 +1,5 @@
-const API_UNITS = "http://localhost:3001/health-units/status";
-const API_REPORT = "http://localhost:3001/reports/restrictions";
+const API_UNITS = "https://disponibilidade-das-unidades-de-saude.onrender.com/health-units/status";
+const API_REPORT = "https://disponibilidade-das-unidades-de-saude.onrender.com/reports/restrictions";
 
 let selectedUnitIds = [];
 

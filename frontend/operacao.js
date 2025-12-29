@@ -1,5 +1,5 @@
-const API_STATUS = "http://localhost:3001/health-units/status";
-const API_RESTRICT = "http://localhost:3001/restrictions";
+const API_STATUS = "https://disponibilidade-das-unidades-de-saude.onrender.com/health-units/status";
+const API_RESTRICT = "https://disponibilidade-das-unidades-de-saude.onrender.com/restrictions";
 const OPERATOR_ID = 1;
 
 let unitsCache = [];

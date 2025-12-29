@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3001/health-units/status";
+const API_URL = "https://disponibilidade-das-unidades-de-saude.onrender.com/health-units/status";
 
 /* =============================
    REGIÕES POR ID
