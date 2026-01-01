@@ -84,7 +84,7 @@ async function loadReopenList() {
 async function reopenRestriction(id) {
   try {
     const res = await fetch(
-      `http://localhost:3001/restrictions/${id}/reopen`,
+      `https://disponibilidade-das-unidades-de-saude.onrender.com/restrictions/${id}/reopen`,
       { method: "POST" }
     );
 
