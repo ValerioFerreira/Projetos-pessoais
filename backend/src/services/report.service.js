@@ -235,7 +235,11 @@ export async function generateRestrictionReport({
     .replace("{{DATA_GERACAO}}", new Date().toLocaleDateString())
     .replace("{{UNIDADES}}", unitsHtml);
 
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    headless: true
+  });
+
   const page = await browser.newPage();
 
   await page.setContent(html, { waitUntil: "load" });
